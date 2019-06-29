@@ -29,7 +29,36 @@ class SinglyLinkedList:
         new_node.next=previous.next
         previous.next = new_node
     
-    def print(self):
+    def swap_nodes(self,x,y):
+        if x==y:
+            return
+        prevX=None
+        currX=self.head
+        while currX and currX.data!=x:
+            prevX=currX
+            currX=currX.next
+        
+        prevY=None
+        currY=self.head
+        while currY and currY.data!=y:
+            prevY=currY
+            currY=currY.next
+        
+        if prevX:
+            prevX.next=currY
+        else:
+            self.head=currY
+        
+        if prevY:
+            prevY.next=currX
+        else:
+            self.head=currX
+        
+        temp=currX.next
+        currX.next=currY.next
+        currY.next=temp
+    
+    def print_(self):
         temp=self.head
         while temp:
             print(temp.data)
@@ -74,7 +103,6 @@ class SinglyLinkedList:
             s.next=q
         if not q:
             s.next=p
-        
         return new_head;
     
     def remove_duplicates(self):
@@ -119,7 +147,6 @@ class SinglyLinkedList:
             count+=1
         if not q:
             return 'no node found'
-        
         while p and q:
             p=p.next
             q=q.next
@@ -135,10 +162,9 @@ class SinglyLinkedList:
         return count
 
         
-    def right_rotate(self,k):
+    def left_rotate(self,k):
         p=self.head
         q=self.head
-        
         count=0
         prev=None
         while p and count<k:
@@ -147,26 +173,22 @@ class SinglyLinkedList:
             q=q.next
             count+=1
         p=prev
-        
         while q:
             prev=q
             q=q.next
         q=prev
-        
         q.next=self.head
         self.head=p.next
         p.next=None
         
-    def left_rotate(self,k):
+    def right_rotate(self,k):
         p=self.head
         q=self.head
         r=self.head
         count=0
         prev=None
-        
         while q.next:
             q=q.next
-        
         while r and count<k:
             prev=r
             r=r.next
@@ -188,29 +210,27 @@ class SinglyLinkedList:
                 return False
             p=p.next
         return True
+#     
+#     def move_tail_to_head(self):
+#         last_node=self.head
+#         second_last_node=None
+#         while last_node.next:
+#             second_last_node=last_node
+#             last_node=last_node.next
+#         last_node.next=self.head
+#         self.head=last_node
+#         second_last_node.next=None
     
-    def move_tail_to_head(self):
-#         my solution
-#         p=self.head
-#         q=self.head
-#         prev=None
-#         while p.next:
-#             prev=p
-#             p=p.next
-#             q=q.next
-#         p=prev
-#         q.next=self.head
-#         self.head=q
-#         p.next=None
-        last_node=self.head
-        second_last_node=None
-        while last_node.next:
-            second_last_node=last_node
-            last_node=last_node.next
-        last_node.next=self.head
-        self.head=last_node
-        second_last_node.next=None
-    
+    def move_tail_to_head_(self):
+        curr=self.head
+        prev=None
+        while curr.next:
+            prev=curr
+            curr=curr.next
+        curr.next=self.head
+        self.head=curr
+        prev.next=None
+        
     def sum_two_lists(self,another_list):
         p=self.head
         q=another_list.head
@@ -233,10 +253,10 @@ class SinglyLinkedList:
             else:
                 carry=0
                 sum_llist.append(sum_)
-            if p:
-                p=p.next
-            if q:
-                q=q.next
+#             if p:
+            p=p.next
+#             if q:
+            q=q.next
             
         sum_llist.print()
             
@@ -248,6 +268,75 @@ class SinglyLinkedList:
             q=q.next.next
         print(p.data)
     
+    def check_loop(self):
+        p=self.head
+        q=self.head
+        while p and q and q.next:
+            p=p.next
+            q=q.next.next
+            if p==q:
+                return p
+        return False
+    
+    def start_of_loop(self,p):
+        q=self.head
+        while p!=q:
+            p=p.next
+            q=q.next
+        print(p.data)
+        return p
+    
+    def intersect(self, other):
+        p=self.head
+        q=other.head
+        r=SinglyLinkedList()
+        while p and q:
+            if p.data==q.data:
+                r.append(p.data)
+                p=p.next
+                q=q.next
+            elif p.data<q.data:
+                p=p.next
+            else:
+                q=q.next
+        return r
+    
+    def intersection_point(self, other):
+        len1=self.length()
+        len2=other.length()
+        count=0
+        p=self.head
+        q=other.head
+        if len1>len2:
+            while p and count<abs(len1-len2):
+                p=p.next
+        if len2>len1:
+            while q and count<abs(len1-len2):
+                q=q.next
+        while p and q and p!=q:
+            p=p.next
+            q=q.next
+        return p.data
+    
+    def seggregate_odd_even(self):
+        curr=self.head
+        new_list=SinglyLinkedList()
+        prev=None
+        while curr:
+            if curr.data%2==0:
+                new_list.append(curr.data)
+                prev.next=curr.next
+            prev=curr
+            curr=curr.next
+        self.append_list(new_list)
+    
+    def append_list(self,other):
+        p=self.head
+        q=other.head
+        while p.next:
+            p=p.next
+        p.next=q
+        other.head=None
         
 llist=SinglyLinkedList()
 llist.append(1)
@@ -256,3 +345,36 @@ llist.append(3)
 llist.append(4)
 llist.append(5)
 llist.append(6)
+llist.append(7)
+llist.append(8)
+
+llist.seggregate_odd_even()
+llist.print_()
+
+# llist1=SinglyLinkedList()
+# llist1.append(2)
+# llist1.append(4)
+# llist1.append(6)
+# llist1.append(8)
+# 
+# llist.append_list(llist1)
+# llist.print_()
+# llist.seggregate_odd_even()
+
+# llist1=SinglyLinkedList()
+
+# 
+# intersected=llist.intersect(llist1)
+# intersected.print_()
+# llist.swap_nodes(2, 4)
+# llist.print_()
+
+
+
+# llist.append(2) 
+# llist.append(3) 
+# llist.append(1) 
+# llist.append(2) 
+# llist.append(1)
+# llist.head.next.next.next = llist.head 
+# llist.start_of_loop(llist.check_loop())

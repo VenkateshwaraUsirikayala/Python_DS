@@ -9,7 +9,7 @@ class CircularLinkedList:
         new_node=Node(data)
         if not self.head:
             self.head=new_node
-            self.head.next=self.head
+            new_node.next=new_node
         else:
             curr=self.head
             while curr.next!=self.head:

@@ -22,8 +22,8 @@ def findMin(arr, low, high):
   
     # Decide whether we need to go to left half or right half 
     if arr[high] > arr[mid]: 
-        return findMin(arr, low, mid-1) 
-    return findMin(arr, mid+1, high)
+        return findMin(arr, mid+1, high)
+    return findMin(arr, low, mid-1) 
 
 l=[5, 6, 1, 2, 3, 4]
 n=len(l)

@@ -8,9 +8,9 @@ def binarySearch(arr, e):
             print('element found at', mid)
             return
         elif e>arr[mid]:
-            l=mid
+            l=mid+1
         elif e<arr[mid]:
-            r=mid
+            r=mid-1
     return "element not found"
 
 binarySearch([4,8,9,55,65,99], 65)

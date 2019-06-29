@@ -1,5 +1,17 @@
 a=[10,20,35,50,75,80]
 
+def find_pair_(arr, k):
+    n=len(arr)
+    s=set()
+    for i in arr:
+        s.add(i)
+    for element in arr:
+        if element-k in s:
+            return True
+    return False
+
+
+
 
 def find_pair(arr,k):
     n=len(arr)
@@ -14,4 +26,4 @@ def find_pair(arr,k):
         elif sum>k:
             j-=1
     return False
-print(find_pair(a, 70))
+print(find_pair_(a, 70))

@@ -8,13 +8,13 @@ def rearrange(arr):
             j+=1
             arr[i],arr[j]=arr[j],arr[i] 
     
-    pos=j+1
-    neg=0
-    
-    while pos<n and neg<pos:
-        arr[neg],arr[pos]=arr[pos],arr[neg]
-        pos+=1
-        neg+=2
+#     pos=j+1
+#     neg=0
+#     
+#     while pos<n and neg<pos:
+#         arr[neg],arr[pos]=arr[pos],arr[neg]
+#         pos+=1
+#         neg+=2
      
 
 rearrange(arr)
