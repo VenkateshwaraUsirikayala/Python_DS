@@ -1,6 +1,7 @@
 from queue import Queue
 from sys import maxsize
 from linked_list.doubly_linked_list import print_list
+from logging import RootLogger
 
 class Queue:
 
@@ -53,7 +54,6 @@ class Dist_Node:
 
 
 class  Node:
-
     def __init__(self, value):
         self.data = value
         self.left = None
@@ -118,17 +118,13 @@ class BinaryTree:
         downlevel = self.get_level_(node.right, data, level + 1)
         return downlevel
     
-    def nodes_at_given_level(self, level):
-        if not self.root:
+    def nodes_at_given_level(self,root,level):
+        if not root:
             return
-        return 
-    
-    def nodes_at_given_level_(self, node, level):
-        if level == 0:
-            print(self.root.data)
-        else:
-            self.nodes_at_given_level_(node.left, level - 1)
-            self.nodes_at_given_level_(node.right, level - 1)
+        if level==0:
+            print(root.data)
+        self.nodes_at_given_level(root.left, level-1)
+        self.nodes_at_given_level(root.right, level-1)
         
     def in_order_traversal_iterative(self, root):
         curr_node = root
@@ -195,8 +191,8 @@ class BinaryTree:
             queue.enqueue(root)
             traversal = ""
             while len(queue) > 0:
-                traversal += str(queue.peek()) + "-"
                 node = queue.dequeue()
+                print(node.data)
                 if node.left:
                     queue.enqueue(node.left)
                 if node.right:
@@ -400,6 +396,7 @@ class BinaryTree:
                     queue.insert(0, element.right)
             return count
     
+    
     def print_leaf_nodes(self, root):
         if root:
             queue = []
@@ -504,16 +501,18 @@ class BinaryTree:
             return True, list
         return False
     
-    def print_all_paths_from_root_to_leaf(self, root, list):
+    def print_all_paths_from_root_to_leaf(self, root, stack):
         if not root:
             return
-        list.append(root)
-        self.print_all_paths_from_root_to_leaf(root.left, list)
-        for element in list:
-            print(element.data)
-        print("==============")
-        self.print_all_paths_from_root_to_leaf(root.right, list)
-        list.pop()
+        stack.append(root)
+        if not root.left and not root.right:
+            print(''.join([str(i) for i in stack]))
+        self.print_all_paths_from_root_to_leaf(root.left, stack)
+        self.print_all_paths_from_root_to_leaf(root.right, stack)
+        stack.pop()
+        
+        
+        
         
     def is_identical(self, root1, root2):
         if not root1 and not root2:
@@ -554,13 +553,12 @@ class BinaryTree:
                 queue.insert(0, element.right)
         
         return head
-    def max_sum(self, root):
+    
+    def max_path_sum(self, root):
         if not root:
             return 0
-#         if root.left==None and root.right==None:
-#             return root.data
-        l = self.max_sum(root.left)
-        r = self.max_sum(root.right)
+        l = self.max_path_sum(root.left)
+        r = self.max_path_sum(root.right)
         return max(l, r) + root.data
     
     def isMirror(self, root1 , root2): 
@@ -606,7 +604,33 @@ class BinaryTree:
         self.delete_all_nodes(root.right)
         root=None
     
-   
+    def delete_tree(self, root):
+        if not root:
+            return
+        queue=[]
+        queue.insert(0, root)
+        while queue:
+            element=queue.pop()
+            if element.left:
+                queue.insert(0, element.left)
+            if element.right:
+                queue.insert(0, element.right)
+            element=None
+    
+    def are_siblings(self, root, value1, value2):
+        if not root:
+            return
+        if root.left and root.right:
+            if root.left.data==value1 and root.right.data==value2:
+                return True
+        if self.are_siblings(root.left, value1, value2):
+            return  True
+        if self.are_siblings(root.right, value1, value2):
+            return True
+        
+        
+        return False
+        
 
 
 class BinarySearchTree:
@@ -701,31 +725,73 @@ class BinarySearchTree:
             self.inorder_successor(root.left, main_root, key)
         else:
             self.inorder_successor(root.right, main_root, key)
+            
+    
+            
+    def next_min_node(self,root):
+        if not root:
+            return
+        temp=root
+        while temp.left:
+            temp=temp.left
+        return temp
+            
+            
+    def delete_node(self,root,key):
+        if not root:
+            return
+        if key<root.data:
+            root.left=self.delete_node(root.left, key)
+        elif key>root.data:
+            root.right=self.delete_node(root.right, key)
+        else:
+            if not root.left:
+                temp=root.right
+                root=None
+                return temp
+            if not root.right:
+                temp=root.left
+                root=None
+                return temp
+            temp=self.next_min_node(root.right)
+            root.data=temp.data
+            root.right=self.delete_node(root.right, temp.data)
+        return root
+            
+                
+            
+                
     
 
 # bst=BinarySearchTree()
-# bst.insert(4)
-# bst.insert(2)
-# bst.insert(5)
-# bst.insert(8)
-# bst.insert(10)
+# bst.insert(50)
+# bst.insert(30)
+# bst.insert(70)
+# bst.insert(20)
+# bst.insert(40)
+# bst.insert(60)
+# bst.insert(80)
+# bst.insert(38)
+# bst.insert(42)
+# bst.delete_node(bst.root, 30)
 # bst.inorder_predecessor(bst.root, 4)
 # bst.inorder_predecessor(bst.root,bst.root,10)
 # bst.inorder_successor(bst.root, bst.root, 2)
 # print(bst.find(11))
 # print(bst.inorder_traversal(bst.root, []))
-tree=BinaryTree(1)
-tree.root.left = Node(2) 
-tree.root.right = Node(3) 
-tree.root.left.left = Node(4) 
-tree.root.left.right = Node(5) 
-tree.root.right.left = Node(6) 
+# tree=BinaryTree(1)
+# tree.root.left = Node(2) 
+# tree.root.right = Node(3) 
+# tree.root.left.left = Node(4) 
+# tree.root.left.right = Node(5) 
+# tree.root.right.left = Node(6) 
 # tree.root.right.left.right = Node(8) 
-tree.root.right.right = Node(7) 
-tree.post_order_traversal(tree.root)
-tree.delete_all_nodes(tree.root)
-print("=====================")
-tree.post_order_traversal(tree.root)
+# tree.root.right.right = Node(7) 
+# tree.post_order_traversal(tree.root)
+# tree.delete_all_nodes(tree.root)
+# tree.delete_tree(tree.root)
+# print("=====================")
+# tree.post_order_traversal(tree.root)
 
 # linkedlist=tree.to_doubly_linked_list(tree.root)
 # print_list(linkedlist)
@@ -751,17 +817,19 @@ tree.post_order_traversal(tree.root)
 # print(tree.is_symmetric(tree.root))
 
 # 
-# tree1=BinaryTree(1)
-# tree1.root.left = Node(2) 
-# tree1.root.right = Node(3) 
-# tree1.root.left.left = Node(4) 
-# tree1.root.left.right = Node(5) 
-# tree1.root.right.left = Node(6) 
-# tree1.root.right.left.right = Node(8) 
-# tree1.root.right.right = Node(7) 
-
-# print(tree.max_sum(tree.root))
-# tree.print_all_paths_from_root_to_leaf(tree.root, [])
+tree1=BinaryTree(1)
+tree1.root.left = Node(2) 
+tree1.root.right = Node(3) 
+tree1.root.left.left = Node(4) 
+tree1.root.left.right = Node(5) 
+tree1.root.right.left = Node(6) 
+tree1.root.right.left.right = Node(8) 
+tree1.root.right.right = Node(7) 
+# tree1.delete_tree(tree.root)
+# print('max sum = ',tree1.max_path_sum(tree1.root))
+# tree1.print_all_paths_from_root_to_leaf(tree1.root, [])
+# tree1.nodes_at_given_level(tree1.root, 3)
+print(tree1.are_siblings(tree1.root, 5,6))
 # print(tree.is_identical(tree.root, tree1.root))
 
 # tree=BinaryTree(10)
@@ -769,7 +837,7 @@ tree.post_order_traversal(tree.root)
 # tree.root.right = Node(7) 
 # tree.root.left.left = Node(8) 
 # tree.root.left.right = Node(-4) 
-# print(tree.max_sum(tree.root))
+# print(tree.max_path_sum(tree.root))
 
 # print(tree.root_to_leaf_with_given_sum(tree.root, 18, []))
 # print(tree.sum_of_all_nodes_in_tree(tree.root))

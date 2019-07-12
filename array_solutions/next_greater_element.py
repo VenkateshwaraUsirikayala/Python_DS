@@ -88,22 +88,8 @@ def print_next_greater(arr):
         element=stack.pop()
         print(element,'-->',-1)
         
-def print_gre(arr):
-    s=[]
-    a.append(arr[0])
-    n=len(arr)
-    for i in range(n):
-        next=arr[i]
-        if len(s)!=0:
-            element=s.pop()
-            while element<next:
-                print(element,' --> ',next)
-                if len(s)==0:
-                    break
-                element=s.pop()
-            if element>next:
-                s.append(element)
-        s.append(next)
-    
-# printNGE(a)
-print_next_greater(a)
+        
+        
+        
+printNGE(a)
+# print_next_greater(a)

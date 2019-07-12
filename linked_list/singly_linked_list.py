@@ -173,10 +173,8 @@ class SinglyLinkedList:
             q=q.next
             count+=1
         p=prev
-        while q:
-            prev=q
+        while q.next:
             q=q.next
-        q=prev
         q.next=self.head
         self.head=p.next
         p.next=None
@@ -186,14 +184,11 @@ class SinglyLinkedList:
         q=self.head
         r=self.head
         count=0
-        prev=None
         while q.next:
             q=q.next
-        while r and count<k:
-            prev=r
+        while r.next and count<k:
             r=r.next
             count+=1
-        r=prev
         self.head=r.next            
         r.next=None
         q.next=p
